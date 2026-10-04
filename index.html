@@ -28,11 +28,11 @@
                 <form id="uploadForm" class="space-y-4">
                     <div>
                         <label class="block text-sm font-semibold mb-1">Họ và tên</label>
-                        <input type="text" id="name" required class="w-full px-4 py-2 border rounded-xl focus:ring focus:ring-blue-200 focus:outline-none">
+                        <input type="text" id="name" required class="w-full px-4 py-2 border rounded-xl focus:ring focus:ring-blue-200 focus:outline-none" placeholder="Nhập họ và tên...">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-1">Số điện thoại <span class="text-red-500">*</span></label>
-                        <input type="tel" id="phone" required class="w-full px-4 py-2 border rounded-xl focus:ring focus:ring-blue-200 focus:outline-none" placeholder="Dùng để kích hoạt kết quả">
+                        <input type="tel" id="phone" required class="w-full px-4 py-2 border rounded-xl focus:ring focus:ring-blue-200 focus:outline-none" placeholder="Dùng để đối soát mở khóa kết quả">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-1">Năm sinh</label>
@@ -50,71 +50,83 @@
 
             <!-- MÀN HÌNH 2: ĐANG XỬ LÝ -->
             <div id="loading-container" class="hidden text-center py-10">
-                <div class="relative w-32 h-32 mx-auto bg-gray-200 rounded-lg overflow-hidden mb-4">
-                    <img id="preview-img" class="w-full h-full object-cover opacity-50" />
+                <div class="relative w-32 h-32 mx-auto bg-gray-200 rounded-lg overflow-hidden mb-4 shadow-inner">
+                    <img id="preview-img" class="w-full h-full object-cover opacity-60" />
                     <div class="scanning-line"></div>
                 </div>
                 <div class="loader"></div>
-                <p class="mt-4 font-semibold text-blue-600">AI đang quét các dữ kiện tướng số...</p>
-                <p class="text-xs text-gray-500 mt-2">Vui lòng chờ giây lát</p>
+                <p class="mt-4 font-semibold text-blue-600">AI đang quét dữ kiện tướng số...</p>
+                <p class="text-xs text-gray-500 mt-2">Quá trình này mất khoảng 5-10 giây, vui lòng không tắt trang.</p>
             </div>
 
             <!-- MÀN HÌNH 3: CHỜ THANH TOÁN TỰ ĐỘNG -->
             <div id="payment-container" class="hidden py-4 text-center">
                 <h2 class="text-xl font-bold text-green-600 mb-1">Đã phân tích hoàn tất!</h2>
-                <p class="text-xs text-gray-600 mb-3">Thanh toán 10.000 VNĐ để mở khóa kết quả chi tiết.</p>
+                <p class="text-xs text-gray-600 mb-3">Thanh toán phí hệ thống để mở khóa bản luận giải chi tiết.</p>
 
                 <!-- KHUNG MÃ QR -->
                 <div class="bg-gray-50 border rounded-2xl p-4 inline-block mb-3 shadow-sm w-full">
-                    <img id="qr-image" src="" alt="Mã QR Thanh Toán" class="mx-auto w-52 h-52 mb-2 rounded-lg border">
-                    <a id="download-qr-btn" href="#" download="ma_qr_xem_tuong.jpg" class="inline-block text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1.5 px-3 rounded-lg mb-3">
-                        ⬇ Tải ảnh QR về máy
+                    <img id="qr-image" src="" alt="Mã QR Thanh Toán" class="mx-auto w-52 h-52 mb-3 rounded-lg border">
+                    
+                    <a id="download-qr-btn" href="#" download="ma_qr_xem_tuong.jpg" class="inline-block text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-2 px-4 rounded-lg mb-4 transition">
+                        ⬇ LƯU ẢNH QR VÀO MÁY ĐỂ QUÉT
                     </a>
 
                     <!-- HƯỚNG DẪN VÀ NÚT COPY THỦ CÔNG -->
-                    <div class="text-left bg-white p-3 rounded-xl border space-y-2 text-xs">
-                        <div class="flex justify-between items-center">
-                            <span>Ngân hàng: <strong>VPBank</strong></span>
+                    <div class="text-left bg-white p-3 rounded-xl border space-y-3 text-sm">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="text-gray-500">Ngân hàng:</span>
+                            <strong>VPBank</strong>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <span>STK: <strong id="stk-text">0843648886</strong></span>
-                            <button onclick="copyText('stk-text')" class="bg-blue-50 text-blue-600 font-bold px-2 py-1 rounded border border-blue-200 hover:bg-blue-100">Sao chép STK</button>
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="text-gray-500">Số tài khoản:</span>
+                            <div class="flex items-center space-x-2">
+                                <strong id="stk-text">0843648886</strong>
+                                <button onclick="copyText('stk-text')" class="bg-gray-100 text-blue-600 text-xs font-bold px-2 py-1 rounded border hover:bg-gray-200">Copy</button>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <span>Số tiền: <strong class="text-red-600 font-bold">10.000 VNĐ</strong></span>
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="text-gray-500">Số tiền:</span>
+                            <strong class="text-red-600 font-bold text-lg">10.000 đ</strong>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <span>Nội dung CK: <strong id="ck-text" class="text-red-600 font-bold"></strong></span>
-                            <button onclick="copyText('ck-text')" class="bg-blue-50 text-blue-600 font-bold px-2 py-1 rounded border border-blue-200 hover:bg-blue-100">Sao chép ND</button>
+                        <div class="flex justify-between items-center pt-1">
+                            <span class="text-gray-500">Nội dung CK:</span>
+                            <div class="flex items-center space-x-2">
+                                <strong id="ck-text" class="text-red-600 font-bold"></strong>
+                                <button onclick="copyText('ck-text')" class="bg-gray-100 text-blue-600 text-xs font-bold px-2 py-1 rounded border hover:bg-gray-200">Copy</button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="flex items-center justify-center space-x-2 text-blue-600 font-semibold text-sm pulse-btn">
+                <div class="flex items-center justify-center space-x-2 text-blue-600 font-semibold text-sm pulse-btn mt-2">
                     <div class="loader !w-4 !h-4 !border-2"></div>
-                    <span>Đang chờ nhận tiền để tự động mở khóa...</span>
+                    <span>Hệ thống đang chờ nhận thanh toán...</span>
                 </div>
-                <p class="text-xs text-gray-400 mt-2">Hệ thống tự nhận diện sau 3-5 giây khi chuyển khoản thành công.</p>
+                <p class="text-xs text-gray-400 mt-2">Kết quả sẽ tự động hiện ra ngay sau khi bạn chuyển khoản thành công.</p>
             </div>
 
             <!-- MÀN HÌNH 4: KẾT QUẢ -->
             <div id="result-container" class="hidden py-5">
-                <div class="bg-green-100 border border-green-300 text-green-800 p-3 rounded-xl mb-4 text-center font-bold">
-                    ✓ Thanh toán thành công! Đã mở khóa kết quả.
+                <div class="bg-green-100 border border-green-300 text-green-800 p-3 rounded-xl mb-4 text-center font-bold flex items-center justify-center space-x-2 shadow-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span>Thanh toán thành công! Đã mở khóa.</span>
                 </div>
-                <h2 class="text-xl font-bold text-blue-800 border-b pb-2 mb-4">Bản Luận Giải Nhân Tướng</h2>
-                <div id="result-text" class="text-gray-700 leading-relaxed space-y-4 whitespace-pre-wrap text-sm p-4 bg-blue-50 rounded-xl border border-blue-100"></div>
-                <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+                <h2 class="text-xl font-bold text-blue-800 border-b pb-2 mb-4 uppercase text-center">Bản Luận Giải Nhân Tướng</h2>
+                <div id="result-text" class="text-gray-800 leading-relaxed space-y-4 whitespace-pre-wrap text-sm p-5 bg-blue-50/50 rounded-xl border border-blue-100 shadow-inner"></div>
+                <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl shadow-sm text-center">
                     <p class="text-sm font-semibold text-yellow-800">Bạn muốn luận giải chuyên sâu hoặc thỉnh pháp cải vận?</p>
-                    <p class="text-sm mt-1">Liên hệ chuyên gia Nguyễn Văn Thuấn qua SĐT/Zalo: <strong>0336987121</strong></p>
+                    <p class="text-sm mt-2">Liên hệ chuyên gia Nguyễn Văn Thuấn</p>
+                    <a href="tel:0336987121" class="inline-block mt-2 bg-yellow-500 text-white font-bold py-2 px-6 rounded-full hover:bg-yellow-600 shadow-md">📞 0336987121</a>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // LINK WEB APP GOOGLE APPS SCRIPT CỦA THẦY
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxAeSncRmGSCr6uQR_QIFrSWwTCE9en9AfEJm7PIjhX6r7O1HzqJ3Fk44X40hKffwV/exec"; 
+        // TÔI ĐÃ ĐIỀN SẴN LINK WEB APP THẬT CỦA THẦY VÀO ĐÂY (Lấy từ ảnh cài đặt SePay của thầy)
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxAeSncRmGSCr6uQR_QlFrSWwTCE9en9AfEJm7P/exec"; 
+        
         let checkPaymentInterval = null;
 
         function copyText(elementId) {
@@ -181,6 +193,10 @@
             // Gửi dữ liệu đi
             fetch(WEB_APP_URL, {
                 method: 'POST',
+                // Tắt no-cors để có thể nhận được phản hồi JSON bình thường
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8',
+                },
                 body: JSON.stringify({ name: name, phone: phone, birthYear: birthYear, images: base64ImagesArray }),
             })
             .then(response => response.json())
@@ -219,7 +235,7 @@
                 }
             })
             .catch(err => {
-                alert("Lỗi kết nối. Vui lòng thử lại!");
+                alert("Đường truyền mạng đang chậm. Hệ thống vẫn đang xử lý, vui lòng tải lại trang và thử lại nhé!");
                 location.reload();
             });
         });
