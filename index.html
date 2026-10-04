@@ -56,7 +56,7 @@
                 </div>
                 <div class="loader"></div>
                 <p class="mt-4 font-semibold text-blue-600">AI đang quét dữ kiện tướng số...</p>
-                <p class="text-xs text-gray-500 mt-2">Quá trình này mất khoảng 5-10 giây, vui lòng không tắt trang.</p>
+                <p class="text-xs text-gray-500 mt-2">Quá trình này mất khoảng 5-15 giây, vui lòng không tắt trang.</p>
             </div>
 
             <!-- MÀN HÌNH 3: CHỜ THANH TOÁN TỰ ĐỘNG -->
@@ -124,8 +124,8 @@
     </div>
 
     <script>
-        // TÔI ĐÃ ĐIỀN SẴN LINK WEB APP THẬT CỦA THẦY VÀO ĐÂY (Lấy từ ảnh cài đặt SePay của thầy)
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxAeSncRmGSCr6uQR_QlFrSWwTCE9en9AfEJm7P/exec"; 
+        // THẦY XÓA DÒNG CHỮ Ở DƯỚI VÀ DÁN ĐƯỜNG LINK THẬT CỦA THẦY VÀO TRONG DẤU NGOẶC KÉP NHÉ:
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxAeSncRmGSCr6uQR_QIFrSWwTCE9en9AfEJm7PIjhX6r7O1HzqJ3Fk44X40hKffwV/exec"; 
         
         let checkPaymentInterval = null;
 
@@ -190,10 +190,10 @@
 
             const base64ImagesArray = await Promise.all(Array.from(files).map(processFile));
 
-            // Gửi dữ liệu đi
+            // Gửi dữ liệu đi (Đã thêm redirect: 'follow' để tránh lỗi kết nối chập chờn)
             fetch(WEB_APP_URL, {
                 method: 'POST',
-                // Tắt no-cors để có thể nhận được phản hồi JSON bình thường
+                redirect: 'follow',
                 headers: {
                     'Content-Type': 'text/plain;charset=utf-8',
                 },
