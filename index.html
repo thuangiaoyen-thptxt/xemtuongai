@@ -39,8 +39,8 @@
                         <input type="number" id="birthYear" required class="w-full px-4 py-2 border rounded-xl focus:ring focus:ring-blue-200 focus:outline-none" placeholder="VD: 1982">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">Tải ảnh lên (Tối đa 7 ảnh)</label>
-                        <p class="text-xs text-gray-500 mb-2">Mặt chính diện, góc nghiêng, lòng và mu 2 bàn tay.</p>
+                        <label class="block text-sm font-semibold mb-1">Tải ảnh lên <span class="text-red-500">(Từ 3 đến 7 ảnh)</span></label>
+                        <p class="text-xs text-gray-500 mb-2">Bắt buộc: Mặt chính diện, lòng bàn tay trái, lòng bàn tay phải. Có thể thêm góc nghiêng, mu bàn tay...</p>
                         <input type="file" id="imageFiles" accept="image/*" multiple required class="w-full px-4 py-2 border rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700">
                         <p id="file-count" class="text-sm font-bold text-blue-600 mt-2 hidden"></p>
                     </div>
@@ -55,8 +55,8 @@
                     <div class="scanning-line"></div>
                 </div>
                 <div class="loader"></div>
-                <p class="mt-4 font-semibold text-blue-600">AI đang quét dữ kiện tướng số...</p>
-                <p class="text-xs text-gray-500 mt-2">Quá trình này mất khoảng 5-15 giây, vui lòng không tắt trang.</p>
+                <p class="mt-4 font-semibold text-blue-600">AI đang phân tích đa góc độ...</p>
+                <p class="text-xs text-gray-500 mt-2">Quá trình này mất khoảng 5-15 giây, vui lòng chờ và không tắt trang.</p>
             </div>
 
             <!-- MÀN HÌNH 3: CHỜ THANH TOÁN TỰ ĐỘNG -->
@@ -64,38 +64,18 @@
                 <h2 class="text-xl font-bold text-green-600 mb-1">Đã phân tích hoàn tất!</h2>
                 <p class="text-xs text-gray-600 mb-3">Thanh toán phí hệ thống để mở khóa bản luận giải chi tiết.</p>
 
-                <!-- KHUNG MÃ QR -->
                 <div class="bg-gray-50 border rounded-2xl p-4 inline-block mb-3 shadow-sm w-full">
                     <img id="qr-image" src="" alt="Mã QR Thanh Toán" class="mx-auto w-52 h-52 mb-3 rounded-lg border">
                     
-                    <a id="download-qr-btn" href="#" download="ma_qr_xem_tuong.jpg" class="inline-block text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-2 px-4 rounded-lg mb-4 transition">
-                        ⬇ LƯU ẢNH QR VÀO MÁY ĐỂ QUÉT
+                    <a id="download-qr-btn" href="#" download="ma_qr_xem_tuong.jpg" class="inline-block text-sm bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl mb-4 transition shadow-md w-full">
+                        ⬇ TẢI MÃ QR ĐỂ QUÉT
                     </a>
 
-                    <!-- HƯỚNG DẪN VÀ NÚT COPY THỦ CÔNG -->
-                    <div class="text-left bg-white p-3 rounded-xl border space-y-3 text-sm">
-                        <div class="flex justify-between items-center border-b pb-2">
-                            <span class="text-gray-500">Ngân hàng:</span>
-                            <strong>VPBank</strong>
-                        </div>
-                        <div class="flex justify-between items-center border-b pb-2">
-                            <span class="text-gray-500">Số tài khoản:</span>
-                            <div class="flex items-center space-x-2">
-                                <strong id="stk-text">0843648886</strong>
-                                <button onclick="copyText('stk-text')" class="bg-gray-100 text-blue-600 text-xs font-bold px-2 py-1 rounded border hover:bg-gray-200">Copy</button>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center border-b pb-2">
-                            <span class="text-gray-500">Số tiền:</span>
-                            <strong class="text-red-600 font-bold text-lg">10.000 đ</strong>
-                        </div>
-                        <div class="flex justify-between items-center pt-1">
-                            <span class="text-gray-500">Nội dung CK:</span>
-                            <div class="flex items-center space-x-2">
-                                <strong id="ck-text" class="text-red-600 font-bold"></strong>
-                                <button onclick="copyText('ck-text')" class="bg-gray-100 text-blue-600 text-xs font-bold px-2 py-1 rounded border hover:bg-gray-200">Copy</button>
-                            </div>
-                        </div>
+                    <div class="text-left bg-yellow-50 p-4 rounded-xl border border-yellow-200 space-y-2 text-sm text-gray-800 mb-2">
+                        <p class="font-bold text-blue-800 border-b border-yellow-300 pb-1 mb-2">📌 HƯỚNG DẪN THANH TOÁN:</p>
+                        <p><b>Bước 1:</b> Bấm nút xanh ở trên để tải ảnh QR về máy.</p>
+                        <p><b>Bước 2:</b> Mở ứng dụng ngân hàng của bạn (MB, VCB, VPBank...)</p>
+                        <p><b>Bước 3:</b> Chọn tính năng <b>Quét QR</b> → Chọn ảnh vừa tải. Hệ thống sẽ tự động điền STK và số tiền.</p>
                     </div>
                 </div>
                 
@@ -124,17 +104,8 @@
     </div>
 
     <script>
-        // THẦY XÓA DÒNG CHỮ Ở DƯỚI VÀ DÁN ĐƯỜNG LINK THẬT CỦA THẦY VÀO TRONG DẤU NGOẶC KÉP NHÉ:
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxAeSncRmGSCr6uQR_QIFrSWwTCE9en9AfEJm7PIjhX6r7O1HzqJ3Fk44X40hKffwV/exec"; 
-        
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxAeSncRmGSCr6uQR_QlFrSWwTCE9en9AfEJm7P/exec"; 
         let checkPaymentInterval = null;
-
-        function copyText(elementId) {
-            const text = document.getElementById(elementId).innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Đã sao chép: " + text);
-            });
-        }
 
         document.getElementById('imageFiles').addEventListener('change', function(e) {
             const count = e.target.files.length;
@@ -143,7 +114,11 @@
                 countDisplay.classList.remove('hidden');
                 countDisplay.innerText = `Đã chọn ${count} ảnh`;
                 if(count > 7) {
-                    alert("Chỉ được tải tối đa 7 ảnh!");
+                    alert("Chỉ được tải tối đa 7 ảnh để đảm bảo tốc độ phân tích!");
+                    e.target.value = "";
+                    countDisplay.classList.add('hidden');
+                } else if(count < 3) {
+                    alert("Vui lòng tải tối thiểu 3 ảnh (Mặt, 2 bàn tay) để AI luận giải chính xác nhất!");
                     e.target.value = "";
                     countDisplay.classList.add('hidden');
                 }
@@ -153,7 +128,10 @@
         document.getElementById('uploadForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const files = document.getElementById('imageFiles').files;
-            if (files.length === 0) return alert("Vui lòng chọn ảnh!");
+            
+            if (files.length < 3 || files.length > 7) {
+                return alert("Vui lòng chọn từ 3 đến 7 ảnh!");
+            }
 
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
@@ -190,7 +168,6 @@
 
             const base64ImagesArray = await Promise.all(Array.from(files).map(processFile));
 
-            // Gửi dữ liệu đi (Đã thêm redirect: 'follow' để tránh lỗi kết nối chập chờn)
             fetch(WEB_APP_URL, {
                 method: 'POST',
                 redirect: 'follow',
@@ -203,24 +180,17 @@
             .then(data => {
                 document.getElementById('loading-container').classList.add('hidden');
                 if(data.status === "success") {
-                    // Cập nhật nội dung chuyển khoản
-                    const contentCK = phone + " xem tuong";
-                    document.getElementById('ck-text').innerText = contentCK;
-
-                    // Tạo mã QR
                     const qrUrl = `https://img.vietqr.io/image/970432-0843648886-compact2.jpg?amount=10000&addInfo=${phone}%20xem%20tuong&accountName=NGUYEN%20VAN%20THUAN`;
                     document.getElementById('qr-image').src = qrUrl;
                     document.getElementById('download-qr-btn').href = qrUrl;
-                    
                     document.getElementById('payment-container').classList.remove('hidden');
 
-                    // Vòng lặp kiểm tra trạng thái thanh toán mỗi 3 giây
                     checkPaymentInterval = setInterval(() => {
                         fetch(`${WEB_APP_URL}?phone=${phone}`)
                         .then(res => res.json())
                         .then(payData => {
                             if (payData.paid === true) {
-                                clearInterval(checkPaymentInterval); // Dừng kiểm tra
+                                clearInterval(checkPaymentInterval); 
                                 document.getElementById('payment-container').classList.add('hidden');
                                 document.getElementById('result-text').innerText = payData.result;
                                 document.getElementById('result-container').classList.remove('hidden');
@@ -235,7 +205,7 @@
                 }
             })
             .catch(err => {
-                alert("Đường truyền mạng đang chậm. Hệ thống vẫn đang xử lý, vui lòng tải lại trang và thử lại nhé!");
+                alert("Đường truyền mạng đang chậm hoặc lỗi kết nối. Vui lòng tải lại trang và thử lại!");
                 location.reload();
             });
         });
