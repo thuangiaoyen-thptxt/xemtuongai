@@ -60,21 +60,41 @@
             </div>
 
             <!-- MÀN HÌNH 3: CHỜ THANH TOÁN TỰ ĐỘNG -->
-            <div id="payment-container" class="hidden py-5 text-center">
-                <h2 class="text-xl font-bold text-green-600 mb-2">Đã phân tích hoàn tất!</h2>
-                <p class="text-sm text-gray-600 mb-4">Quét mã QR để mở khóa bản luận giải chi tiết.</p>
-                <div class="bg-gray-50 border rounded-2xl p-4 inline-block mb-4 shadow-inner">
-                    <img id="qr-image" src="" alt="Mã QR Thanh Toán" class="mx-auto w-48 h-48 mb-2 rounded-lg">
-                    <p class="font-bold text-lg text-blue-800">10.000 VNĐ</p>
-                    <p class="text-sm">VPBank: <strong>0843648886</strong></p>
-                    <p class="text-sm mt-1">Nội dung CK: <strong id="ck-noidung" class="text-red-600"></strong></p>
+            <div id="payment-container" class="hidden py-4 text-center">
+                <h2 class="text-xl font-bold text-green-600 mb-1">Đã phân tích hoàn tất!</h2>
+                <p class="text-xs text-gray-600 mb-3">Thanh toán 10.000 VNĐ để mở khóa kết quả chi tiết.</p>
+
+                <!-- KHUNG MÃ QR -->
+                <div class="bg-gray-50 border rounded-2xl p-4 inline-block mb-3 shadow-sm w-full">
+                    <img id="qr-image" src="" alt="Mã QR Thanh Toán" class="mx-auto w-52 h-52 mb-2 rounded-lg border">
+                    <a id="download-qr-btn" href="#" download="ma_qr_xem_tuong.jpg" class="inline-block text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1.5 px-3 rounded-lg mb-3">
+                        ⬇ Tải ảnh QR về máy
+                    </a>
+
+                    <!-- HƯỚNG DẪN VÀ NÚT COPY THỦ CÔNG -->
+                    <div class="text-left bg-white p-3 rounded-xl border space-y-2 text-xs">
+                        <div class="flex justify-between items-center">
+                            <span>Ngân hàng: <strong>VPBank</strong></span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>STK: <strong id="stk-text">0843648886</strong></span>
+                            <button onclick="copyText('stk-text')" class="bg-blue-50 text-blue-600 font-bold px-2 py-1 rounded border border-blue-200 hover:bg-blue-100">Sao chép STK</button>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Số tiền: <strong class="text-red-600 font-bold">10.000 VNĐ</strong></span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Nội dung CK: <strong id="ck-text" class="text-red-600 font-bold"></strong></span>
+                            <button onclick="copyText('ck-text')" class="bg-blue-50 text-blue-600 font-bold px-2 py-1 rounded border border-blue-200 hover:bg-blue-100">Sao chép ND</button>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="flex items-center justify-center space-x-2 text-blue-600 font-semibold text-sm pulse-btn">
-                    <div class="loader !w-5 !h-5 !border-2"></div>
+                    <div class="loader !w-4 !h-4 !border-2"></div>
                     <span>Đang chờ nhận tiền để tự động mở khóa...</span>
                 </div>
-                <p class="text-xs text-gray-400 mt-3">Hệ thống sẽ tự nhận diện sau 3-5 giây khi chuyển khoản thành công.</p>
+                <p class="text-xs text-gray-400 mt-2">Hệ thống tự nhận diện sau 3-5 giây khi chuyển khoản thành công.</p>
             </div>
 
             <!-- MÀN HÌNH 4: KẾT QUẢ -->
@@ -93,8 +113,16 @@
     </div>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxAeSncRmGSCr6uQR_QIFrSWwTCE9en9AfEJm7PIjhX6r7O1HzqJ3Fk44X40hKffwV/exec"; 
+        // LINK WEB APP GOOGLE APPS SCRIPT CỦA THẦY
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxxl6y0N2iV23X9c0Gj4GfD6k7o2v0tQy_YOUR_SCRIPT_ID/exec"; 
         let checkPaymentInterval = null;
+
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Đã sao chép: " + text);
+            });
+        }
 
         document.getElementById('imageFiles').addEventListener('change', function(e) {
             const count = e.target.files.length;
@@ -159,19 +187,24 @@
             .then(data => {
                 document.getElementById('loading-container').classList.add('hidden');
                 if(data.status === "success") {
+                    // Cập nhật nội dung chuyển khoản
+                    const contentCK = phone + " xem tuong";
+                    document.getElementById('ck-text').innerText = contentCK;
+
                     // Tạo mã QR
-                    document.getElementById('ck-noidung').innerText = phone + " xem tuong";
                     const qrUrl = `https://img.vietqr.io/image/970432-0843648886-compact2.jpg?amount=10000&addInfo=${phone}%20xem%20tuong&accountName=NGUYEN%20VAN%20THUAN`;
                     document.getElementById('qr-image').src = qrUrl;
+                    document.getElementById('download-qr-btn').href = qrUrl;
+                    
                     document.getElementById('payment-container').classList.remove('hidden');
 
-                    // BẮT ĐẦU VÒNG LẶP TỰ ĐỘNG QUÉT KIỂM TRA TIỀN VỀ (Mỗi 3 giây kiểm tra 1 lần)
+                    // Vòng lặp kiểm tra trạng thái thanh toán mỗi 3 giây
                     checkPaymentInterval = setInterval(() => {
                         fetch(`${WEB_APP_URL}?phone=${phone}`)
                         .then(res => res.json())
                         .then(payData => {
                             if (payData.paid === true) {
-                                clearInterval(checkPaymentInterval); // Dừng quét
+                                clearInterval(checkPaymentInterval); // Dừng kiểm tra
                                 document.getElementById('payment-container').classList.add('hidden');
                                 document.getElementById('result-text').innerText = payData.result;
                                 document.getElementById('result-container').classList.remove('hidden');
@@ -186,7 +219,7 @@
                 }
             })
             .catch(err => {
-                alert("Lỗi kết nối. Thử lại!");
+                alert("Lỗi kết nối. Vui lòng thử lại!");
                 location.reload();
             });
         });
