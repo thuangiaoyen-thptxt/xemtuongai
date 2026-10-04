@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xem Tướng AI Tự Động - Chuyên Gia Nguyễn Văn Thuấn</title>
+    <title>Xem Tướng AI Cải Vận</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto; }
@@ -23,7 +23,6 @@
         <div class="p-5">
             <!-- MÀN HÌNH 1: NHẬP THÔNG TIN VÀ TẢI ẢNH -->
             <div id="form-container">
-                <p class="text-center text-gray-600 mb-5 text-sm">Vui lòng nhập thông tin và tải ảnh (khuôn mặt hoặc lòng bàn tay) để AI phân tích.</p>
                 <form id="uploadForm" class="space-y-4">
                     <div>
                         <label class="block text-sm font-semibold mb-1">Họ và tên</label>
@@ -38,38 +37,38 @@
                         <input type="number" id="birthYear" required class="w-full px-4 py-2 border rounded-xl focus:ring focus:ring-blue-200 focus:outline-none" placeholder="VD: 1982">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">Tải ảnh lên</label>
-                        <input type="file" id="imageFile" accept="image/*" required class="w-full px-4 py-2 border rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700">
+                        <label class="block text-sm font-semibold mb-1">Tải ảnh lên (Tối đa 7 ảnh)</label>
+                        <p class="text-xs text-gray-500 mb-2">Chọn nhiều ảnh cùng lúc: Mặt chính diện, góc nghiêng, lòng và mu 2 bàn tay.</p>
+                        <!-- Đã thêm thuộc tính multiple để chọn nhiều file -->
+                        <input type="file" id="imageFiles" accept="image/*" multiple required class="w-full px-4 py-2 border rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700">
+                        <p id="file-count" class="text-sm font-bold text-blue-600 mt-2 hidden"></p>
                     </div>
                     <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition duration-300 mt-4 shadow-md">Bắt Đầu Phân Tích</button>
                 </form>
             </div>
 
-            <!-- MÀN HÌNH 2: ĐANG XỬ LÝ (LOADING) -->
+            <!-- MÀN HÌNH 2: ĐANG XỬ LÝ -->
             <div id="loading-container" class="hidden text-center py-10">
                 <div class="relative w-32 h-32 mx-auto bg-gray-200 rounded-lg overflow-hidden mb-4">
                     <img id="preview-img" class="w-full h-full object-cover opacity-50" />
                     <div class="scanning-line"></div>
                 </div>
                 <div class="loader"></div>
-                <p class="mt-4 font-semibold text-blue-600">AI đang quét các đường nét...</p>
-                <p class="text-xs text-gray-500 mt-2">Vui lòng không đóng trang này</p>
+                <p class="mt-4 font-semibold text-blue-600">AI đang phân tích các dữ kiện tướng số...</p>
+                <p class="text-xs text-gray-500 mt-2">Đang xử lý nhiều ảnh, vui lòng chờ khoảng 10-15 giây</p>
             </div>
 
-            <!-- MÀN HÌNH 3: THANH TOÁN (MỞ KHÓA) -->
+            <!-- MÀN HÌNH 3: THANH TOÁN -->
             <div id="payment-container" class="hidden py-5 text-center">
                 <h2 class="text-xl font-bold text-green-600 mb-2">Đã phân tích xong!</h2>
                 <p class="text-sm text-gray-600 mb-4">Để xem bản luận giải chi tiết, vui lòng thanh toán phí hệ thống.</p>
                 <div class="bg-gray-50 border rounded-2xl p-4 inline-block mb-4">
                     <img id="qr-image" src="" alt="Mã QR Thanh Toán" class="mx-auto w-48 h-48 mb-2 rounded-lg">
                     <p class="font-bold text-lg text-blue-800">10.000 VNĐ</p>
-                    <p class="text-sm">Ngân hàng: VPBank</p>
-                    <p class="text-sm">STK: <strong>0843648886</strong></p>
+                    <p class="text-sm">VPBank: <strong>0843648886</strong></p>
                     <p class="text-sm mt-1">Nội dung CK: <strong id="ck-noidung" class="text-red-600"></strong></p>
                 </div>
-                <p class="text-xs text-gray-500 mb-4 px-4">Sau khi chuyển khoản, hệ thống sẽ tự động mở khóa kết quả sau vài giây.</p>
-                <!-- Nút này tạm dùng cho Bước 2. Ở Bước 3 ta sẽ làm nó tự động -->
-                <button id="btn-check-payment" class="w-full bg-green-500 text-white font-bold py-3 rounded-xl hover:bg-green-600 transition duration-300 shadow-md">Tôi đã chuyển khoản - Nhận kết quả</button>
+                <button id="btn-check-payment" class="w-full bg-green-500 text-white font-bold py-3 rounded-xl hover:bg-green-600 shadow-md">Tôi đã chuyển khoản - Nhận kết quả</button>
             </div>
 
             <!-- MÀN HÌNH 4: KẾT QUẢ -->
@@ -77,7 +76,6 @@
                 <h2 class="text-xl font-bold text-blue-800 border-b pb-2 mb-4">Bản Luận Giải Nhân Tướng</h2>
                 <div id="result-text" class="text-gray-700 leading-relaxed space-y-4 whitespace-pre-wrap text-sm p-4 bg-blue-50 rounded-xl border border-blue-100"></div>
                 <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
-                    <p class="text-sm font-semibold text-yellow-800">Bạn muốn luận giải sâu hơn hoặc tìm cách hóa giải điểm khuyết?</p>
                     <p class="text-sm mt-1">Liên hệ chuyên gia Nguyễn Văn Thuấn qua SĐT/Zalo: <strong>0336987121</strong></p>
                 </div>
             </div>
@@ -87,14 +85,29 @@
     <script>
         // --- QUAN TRỌNG: ĐIỀN LINK WEB APP TỪ BƯỚC 1 VÀO ĐÂY ---
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxAeSncRmGSCr6uQR_QIFrSWwTCE9en9AfEJm7PIjhX6r7O1HzqJ3Fk44X40hKffwV/exec"; 
-        // --------------------------------------------------------
-
+        
         let globalResult = ""; 
+
+        // Hiển thị số lượng ảnh đã chọn
+        document.getElementById('imageFiles').addEventListener('change', function(e) {
+            const count = e.target.files.length;
+            const countDisplay = document.getElementById('file-count');
+            if(count > 0) {
+                countDisplay.classList.remove('hidden');
+                countDisplay.innerText = `Đã chọn ${count} ảnh`;
+                if(count > 7) {
+                    alert("Chỉ được tải lên tối đa 7 ảnh cùng lúc!");
+                    e.target.value = ""; // Xóa chọn
+                    countDisplay.classList.add('hidden');
+                }
+            }
+        });
 
         document.getElementById('uploadForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const file = document.getElementById('imageFile').files[0];
-            if (!file) return alert("Vui lòng chọn ảnh!");
+            const files = document.getElementById('imageFiles').files;
+            if (files.length === 0) return alert("Vui lòng chọn ảnh!");
+            if (files.length > 7) return alert("Chỉ được tải tối đa 7 ảnh!");
 
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
@@ -103,59 +116,65 @@
             document.getElementById('form-container').classList.add('hidden');
             document.getElementById('loading-container').classList.remove('hidden');
 
-            // Nén ảnh để tải lên nhanh hơn
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                document.getElementById('preview-img').src = event.target.result;
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    const MAX_WIDTH = 600; const MAX_HEIGHT = 600;
-                    let width = img.width; let height = img.height;
-                    
-                    if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } } 
-                    else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
-                    
-                    canvas.width = width; canvas.height = height;
-                    ctx.drawImage(img, 0, 0, width, height);
-                    
-                    const base64Data = canvas.toDataURL('image/jpeg', 0.6).split(',')[1];
+            // Lấy ảnh đầu tiên làm ảnh quét minh họa trên màn hình chờ
+            const firstFileReader = new FileReader();
+            firstFileReader.onload = function(event) { document.getElementById('preview-img').src = event.target.result; };
+            firstFileReader.readAsDataURL(files[0]);
 
-                    // Gửi lên server
-                    fetch(WEB_APP_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({ name: name, phone: phone, birthYear: birthYear, image: base64Data, mimeType: 'image/jpeg' }),
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('loading-container').classList.add('hidden');
-                        if(data.status === "success") {
-                            globalResult = data.result; // Lưu ngầm kết quả
+            // Hàm nén 1 ảnh
+            const processFile = (file) => {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const img = new Image();
+                        img.onload = function() {
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            const MAX_WIDTH = 700; const MAX_HEIGHT = 700;
+                            let width = img.width; let height = img.height;
                             
-                            // Hiển thị thanh toán với QR VietQR
-                            document.getElementById('ck-noidung').innerText = phone + " xem tuong";
-                            const qrUrl = `https://img.vietqr.io/image/970432-0843648886-compact2.jpg?amount=10000&addInfo=${phone}%20xem%20tuong&accountName=NGUYEN%20VAN%20THUAN`;
-                            document.getElementById('qr-image').src = qrUrl;
+                            if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } } 
+                            else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
                             
-                            document.getElementById('payment-container').classList.remove('hidden');
-                        } else {
-                            alert("Có lỗi xảy ra: " + data.message);
-                            location.reload();
-                        }
-                    })
-                    .catch(err => {
-                        alert("Lỗi kết nối. Vui lòng thử lại!");
-                        location.reload();
-                    });
-                };
-                img.src = event.target.result;
+                            canvas.width = width; canvas.height = height;
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            resolve(canvas.toDataURL('image/jpeg', 0.6).split(',')[1]);
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
             };
-            reader.readAsDataURL(file);
+
+            // Nén đồng loạt tất cả các ảnh bằng Promise.all
+            const base64ImagesArray = await Promise.all(Array.from(files).map(processFile));
+
+            // Gửi mảng ảnh lên server
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                body: JSON.stringify({ name: name, phone: phone, birthYear: birthYear, images: base64ImagesArray }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading-container').classList.add('hidden');
+                if(data.status === "success") {
+                    globalResult = data.result; 
+                    document.getElementById('ck-noidung').innerText = phone + " xem tuong";
+                    const qrUrl = `https://img.vietqr.io/image/970432-0843648886-compact2.jpg?amount=10000&addInfo=${phone}%20xem%20tuong&accountName=NGUYEN%20VAN%20THUAN`;
+                    document.getElementById('qr-image').src = qrUrl;
+                    document.getElementById('payment-container').classList.remove('hidden');
+                } else {
+                    alert("Có lỗi xảy ra: " + data.message);
+                    location.reload();
+                }
+            })
+            .catch(err => {
+                alert("Lỗi kết nối. Vui lòng thử lại!");
+                location.reload();
+            });
         });
 
-        // Tạm thời ở Bước 2, bấm nút này sẽ hiện kết quả luôn để bạn test. 
-        // Bước 3 chúng ta sẽ nâng cấp nút này thành hàm kiểm tra trên Google Sheets.
         document.getElementById('btn-check-payment').addEventListener('click', function() {
             document.getElementById('payment-container').classList.add('hidden');
             document.getElementById('result-text').innerText = globalResult;
