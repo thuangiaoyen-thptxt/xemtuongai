@@ -39,8 +39,8 @@
                         <input type="number" id="birthYear" required class="w-full px-4 py-2 border rounded-xl focus:ring focus:ring-blue-200 focus:outline-none" placeholder="VD: 1982">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">Tải ảnh lên <span class="text-red-500">(Từ 3 đến 7 ảnh)</span></label>
-                        <p class="text-xs text-gray-500 mb-2">Bắt buộc: Mặt chính diện, lòng bàn tay trái, phải.</p>
+                        <label class="block text-sm font-semibold mb-1">Tải ảnh lên <span class="text-red-500">(BẮT BUỘC ĐÚNG 3 ẢNH)</span></label>
+                        <p class="text-xs text-gray-500 mb-2">Gồm: Mặt chính diện, lòng bàn tay trái, lòng bàn tay phải.</p>
                         <input type="file" id="imageFiles" accept="image/*" multiple required class="w-full px-4 py-2 border rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700">
                         <p id="file-count" class="text-sm font-bold text-blue-600 mt-2 hidden"></p>
                     </div>
@@ -117,12 +117,9 @@
             if(count > 0) {
                 countDisplay.classList.remove('hidden');
                 countDisplay.innerText = `Đã chọn ${count} ảnh`;
-                if(count > 7) {
-                    alert("Chỉ được tải tối đa 7 ảnh để đảm bảo tốc độ phân tích!");
-                    e.target.value = "";
-                    countDisplay.classList.add('hidden');
-                } else if(count < 3) {
-                    alert("Vui lòng tải tối thiểu 3 ảnh (Mặt, 2 bàn tay) để AI luận giải chính xác nhất!");
+                // ĐÃ SỬA: Bắt buộc đúng 3 ảnh
+                if(count !== 3) {
+                    alert("⚠️ BẮT BUỘC: Vui lòng tải ĐÚNG 3 ẢNH (1 ảnh mặt, 1 ảnh lòng bàn tay trái, 1 ảnh lòng bàn tay phải) để AI phân tích chuẩn xác nhất!");
                     e.target.value = "";
                     countDisplay.classList.add('hidden');
                 }
@@ -162,8 +159,9 @@
             e.preventDefault();
             const files = document.getElementById('imageFiles').files;
             
-            if (files.length < 3 || files.length > 7) {
-                return alert("Vui lòng chọn từ 3 đến 7 ảnh!");
+            // ĐÃ SỬA: Chặn gửi đi nếu không đúng 3 ảnh
+            if (files.length !== 3) {
+                return alert("⚠️ LỖI: Bạn phải tải lên ĐÚNG 3 ẢNH!");
             }
 
             const name = document.getElementById('name').value;
